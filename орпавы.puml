@@ -1,0 +1,26 @@
+@startuml
+class org.example.bot.User {
+}
+class org.example.DB.AdminDatabaseManager {
+}
+class org.example.DB.UserDatabaseManager {
+}
+class org.example.Main {
+}
+class org.example.bot.LectureBot {
+}
+class org.example.bot.Admin {
+}
+interface org.example.DB.UserDAO {
+}
+interface org.example.DB.AdminDAO {
+}
+class org.example.bot.KeyboardBuilder {
+}
+
+
+org.example.DB.AdminDAO <|.. org.example.DB.AdminDatabaseManager
+org.example.DB.UserDAO <|.. org.example.DB.UserDatabaseManager
+org.telegram.telegrambots.bots.TelegramLongPollingBot <|-- org.example.bot.LectureBot
+org.example.bot.User <|-- org.example.bot.Admin
+@enduml

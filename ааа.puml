@@ -1,0 +1,50 @@
+@startuml
+class org.example.bot.User {
+- LectureBot lectureBot
+- long id
++ void handleMessage(String,long,long,UserDatabaseManager)
++ void processRating(String,long,long,UserDatabaseManager)
+- void processQuestion(String,long,long,UserDatabaseManager)
++ void processAnswer(String,long,long,UserDatabaseManager)
++ void info(long)
+- void sendMessage(long,String)
+}
+
+
+class org.example.bot.LectureBot {
+- UserDatabaseManager userDatabaseManager
+- AdminDatabaseManager adminDatabaseManager
+- KeyboardBuilder keyboardBuilder
++ void onUpdateReceived(Update)
+- void handleCommand(String,long,long,Update)
+- void handleCallback(Update)
+- void sendMessage(SendMessage)
++ String getBotUsername()
++ String getBotToken()
+}
+
+
+class org.example.bot.Admin {
+- LectureBot lectureBot
++ void addAdmin(AdminDatabaseManager,String,long)
++ void createSlide(AdminDatabaseManager,String,long)
+- void broadcastMessageToAllUsers(AdminDatabaseManager,String)
++ void showSlidesForReport(AdminDatabaseManager,long)
++ void generateReport(UserDatabaseManager,long,String)
++ void sendMostPopularPost(AdminDatabaseManager,long)
+- void sendMessage(long,String)
+}
+
+
+class org.example.bot.KeyboardBuilder {
+- LectureBot lectureBot
++ ReplyKeyboardMarkup getMainAdminKeyboard()
++ ReplyKeyboardMarkup getMainUserKeyboard()
+}
+
+
+
+
+org.telegram.telegrambots.bots.TelegramLongPollingBot <|-- org.example.bot.LectureBot
+org.example.bot.User <|-- org.example.bot.Admin
+@enduml

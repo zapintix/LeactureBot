@@ -1,0 +1,46 @@
+@startuml
+class org.example.DB.AdminDatabaseManager {
+- HikariDataSource dataSource
++ boolean isAdmin(long)
++ void addUser(long,String)
++ List<Long> getAllUserIds()
++ void createSlide(int,String)
++ List<Integer> getAllSlideIds()
++ String getMostPopularSlide()
+}
+
+
+class org.example.DB.UserDatabaseManager {
+- HikariDataSource dataSource
++ boolean isUserRegistered(long)
++ void registerUser(long,String)
++ void saveQuestion(long,int,String)
++ void saveRating(long,int,boolean)
++ void saveAnswer(long,int,String)
++ String generateReport(int)
+}
+
+
+interface org.example.DB.UserDAO {
+~ boolean isUserRegistered(long)
+~ void registerUser(long,String)
+~ void saveQuestion(long,int,String)
+~ void saveRating(long,int,boolean)
+~ void saveAnswer(long,int,String)
+~ String generateReport(int)
+}
+
+interface org.example.DB.AdminDAO {
+~ boolean isAdmin(long)
+~ void addUser(long,String)
+~ String getMostPopularSlide()
+~ List<Long> getAllUserIds()
+~ List<Integer> getAllSlideIds()
+~ void createSlide(int,String)
+}
+
+
+
+org.example.DB.AdminDAO <|.. org.example.DB.AdminDatabaseManager
+org.example.DB.UserDAO <|.. org.example.DB.UserDatabaseManager
+@enduml

@@ -1,0 +1,96 @@
+@startuml
+class org.example.bot.User {
+- LectureBot lectureBot
+- long id
++ void handleMessage(String,long,long,UserDatabaseManager)
++ void processRating(String,long,long,UserDatabaseManager)
+- void processQuestion(String,long,long,UserDatabaseManager)
++ void processAnswer(String,long,long,UserDatabaseManager)
++ void info(long)
+- void sendMessage(long,String)
+}
+
+
+class org.example.DB.AdminDatabaseManager {
+- HikariDataSource dataSource
++ boolean isAdmin(long)
++ void addUser(long,String)
++ List<Long> getAllUserIds()
++ void createSlide(int,String)
++ List<Integer> getAllSlideIds()
++ String getMostPopularSlide()
+}
+
+
+class org.example.DB.UserDatabaseManager {
+- HikariDataSource dataSource
++ boolean isUserRegistered(long)
++ void registerUser(long,String)
++ void saveQuestion(long,int,String)
++ void saveRating(long,int,boolean)
++ void saveAnswer(long,int,String)
++ String generateReport(int)
+}
+
+
+class org.example.Main {
++ {static} void main(String[])
+}
+
+class org.example.bot.LectureBot {
+- UserDatabaseManager userDatabaseManager
+- AdminDatabaseManager adminDatabaseManager
+- KeyboardBuilder keyboardBuilder
++ void onUpdateReceived(Update)
+- void handleCommand(String,long,long,Update)
+- void handleCallback(Update)
+- void sendMessage(SendMessage)
++ String getBotUsername()
++ String getBotToken()
+}
+
+
+class org.example.bot.Admin {
+- LectureBot lectureBot
++ void addAdmin(AdminDatabaseManager,String,long)
++ void createSlide(AdminDatabaseManager,String,long)
+- void broadcastMessageToAllUsers(AdminDatabaseManager,String)
++ void showSlidesForReport(AdminDatabaseManager,long)
++ void generateReport(UserDatabaseManager,long,String)
++ void sendMostPopularPost(AdminDatabaseManager,long)
+- void sendMessage(long,String)
+}
+
+
+interface org.example.DB.UserDAO {
+~ boolean isUserRegistered(long)
+~ void registerUser(long,String)
+~ void saveQuestion(long,int,String)
+~ void saveRating(long,int,boolean)
+~ void saveAnswer(long,int,String)
+~ String generateReport(int)
+}
+
+interface org.example.DB.AdminDAO {
+~ boolean isAdmin(long)
+~ void addUser(long,String)
+~ String getMostPopularSlide()
+~ List<Long> getAllUserIds()
+~ List<Integer> getAllSlideIds()
+~ void createSlide(int,String)
+}
+
+class org.example.bot.KeyboardBuilder {
+- LectureBot lectureBot
++ ReplyKeyboardMarkup getMainAdminKeyboard()
++ ReplyKeyboardMarkup getMainUserKeyboard()
+}
+
+
+
+
+org.example.DB.AdminDAO <|.. org.example.DB.AdminDatabaseManager
+org.example.DB.UserDAO <|.. org.example.DB.UserDatabaseManager
+org.telegram.telegrambots.bots.TelegramLongPollingBot <|-- org.example.bot.LectureBot
+org.example.bot.User <|-- org.example.bot.Admin
+@enduml
